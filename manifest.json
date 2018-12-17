@@ -1,0 +1,6 @@
+{
+    "name": "Hate Filter (For Chrome)",
+    "version": "0.0",
+    "description": "Blocks sentences that have hateful speech in them.",
+    "permissions": ["storage"]
+}
