@@ -2,7 +2,11 @@
     "name": "Hate Filter (For Chrome)",
     "version": "0.0",
     "description": "Blocks sentences that have hateful speech in them.",
-    "permissions": ["storage"],
+    "permissions": ["declarativeContent", "activeTab","storage"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
     "page_action": {
         "default_popup": "popup.html"
     },
