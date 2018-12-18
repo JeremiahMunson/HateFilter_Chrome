@@ -6,7 +6,7 @@ activate.onclick = function(){
     if(!activated){
         activated = true;
         chrome.tabs.executeScript({
-            code: "pars = document.getElementsByTagName('p'); badPars = []; badDisp = []; for(var i = 0; i < pars.length; i++){pars[i].innerHTML = pars[i].innerHTML.toLowerCase(); if(pars[i].innerHTML.indexOf('it') >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
+            code: "pars = document.getElementsByTagName('p'); lowerPars = []; badPars = []; badDisp = []; for(var i = 0; i < pars.length; i++){lowerPars.push(pars[i].innerHTML.toLowerCase()); if(lowerPars[i].indexOf('it') >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
         });
         this.innerHTML = "Deactivate";
     }
