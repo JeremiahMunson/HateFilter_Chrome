@@ -26,11 +26,11 @@ activate.onclick = function(){
 function hide(block){
     // Setting the arrays to be empty. Have to do it before the loop otherwise the arrays before the last loop will be lost because they'll be reset to empty each loop.
     chrome.tabs.executeScript({
-        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = [];"
+        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = [];"
     });
     // Looping through all words/phrases to block
     for(var i = 0; i < block.length; i++){
-        // Checking all paragraphs
+        // Checking paragraphs
         chrome.tabs.executeScript({
             code: "pars = document.getElementsByTagName('p');  for(var i = 0; i < pars.length; i++){lowerPars.push(pars[i].innerHTML.toLowerCase()); if(lowerPars[i].indexOf('" + block[i] + "') >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
         });
@@ -49,7 +49,11 @@ function hide(block){
         // Descriptive Lists (dt)
         chrome.tabs.executeScript({
             code: "dt = document.getElementsByTagName('dt'); for (var i = 0; i < dt.length; i++){lowerDT.push(dt[i].innerHTML.toLowerCase()); if(lowerDT[i].indexOf('" + block[i] + "') >= 0){badDT.push(dt[i]); badTDisp.push(dt[i].style.display); dt[i].style.display = 'none';}}"
-        })
+        });
+        // Checking twitter quoted tweets
+        chrome.tabs.executeScript({
+            code: "qTweet = document.getElementsByClassName('QuoteTweet-container'); for(var i = 0; i<qTweet.length; i++){lowerQT.push(qTweet[i].innerHTML.toLowerCase()); if(lowerQT[i].indexOf('"+block[i]+"') >= 0){badQT.push(qTweet[i]); badQTDisp.push(qTweet[i].style.display); qTweet[i].style.display = 'none';}}"
+        });
     };
 };
 
@@ -73,5 +77,9 @@ function show(){
     // Descriptive Lists (dt)
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badDT.length; j++){badDT[j].style.display = badTDisp[j];}"
+    });
+    // Quoted Tweets
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badQT.length; j++){badQT[j].style.display = badQTDisp[j];}"
     });
 };
