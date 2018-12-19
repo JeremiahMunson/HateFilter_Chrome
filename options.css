@@ -5,7 +5,7 @@ body{
 
 .column{
     float: left;
-    width: 33%;
+    width: 25%;
     padding: 0px;
 }
 
@@ -17,4 +17,5 @@ body{
 
 .save{
     margin-top: 20px;
+    float: left;
 }
