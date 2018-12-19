@@ -2,8 +2,8 @@ let activate = document.getElementById('activate');
 
 chrome.storage.sync.get('activated', function(data){
     activated = data.activated;
-    if(activated){activate.innerHTML = "Deactivate";}
-    else{activate.innerHTML = "Activate";}
+    if(activated){activate.src = "active48.png";}
+    else{activate.src = "deactive48.png";}
 });
 
 activate.onclick = function(){
@@ -11,12 +11,12 @@ activate.onclick = function(){
         if(!activated){
             chrome.storage.sync.set({'activated': true});
             hide();
-            activate.innerHTML = "Deactivate";
+            activate.src = "active48.png";
         }
         else{
             chrome.storage.sync.set({'activated': false});
             show();
-            activate.innerHTML = "Activate";
+            activate.src = "deactive48.png";
         };
     });
 };
