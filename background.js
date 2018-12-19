@@ -6,6 +6,8 @@ chrome.runtime.onInstalled.addListener(function() {
       }]);
     });
     chrome.storage.sync.set({'activated': false});
+    var blockOptions = ["fag", "faggot", "queer", "peter puffer", "cracker", "nigger", "chink", "wet back"];
+    chrome.storage.sync.set({'block': blockOptions});
 });
 
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
