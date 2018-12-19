@@ -107,3 +107,18 @@ saveButton.onclick = function(){
     };
     chrome.storage.sync.set({'block':wordsToBlock})
 };
+
+addHomophobic.onclick = function(){
+    var homophobicToAdd = document.getElementById('homophobicWord').value;
+    chrome.storage.sync.get('homophobic', function(homophobicWords){
+        var words = homophobicWords.homophobic
+        words.push(homophobicToAdd);
+        chrome.storage.sync.set({'homophobic': words});
+    });
+    chrome.storage.sync.get('block', function(blocking){
+        var block = blocking.block;
+        block.push(homophobicToAdd);
+        chrome.storage.sync.set({'block': block});
+    });
+    chrome.tabs.reload();
+};
