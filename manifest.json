@@ -8,7 +8,15 @@
         "persistent": false
     },
     "page_action": {
-        "default_popup": "popup.html"
+        "default_popup": "popup.html",
+        "default_icon": {
+            "48": "active48.png",
+            "128": "active128.png"
+        }
+    },
+    "icons": {
+        "48": "active48.png",
+        "128": "active128.png"
     },
     "manifest_version": 2
 }
