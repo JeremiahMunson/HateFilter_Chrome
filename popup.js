@@ -22,13 +22,32 @@ activate.onclick = function(){
 };
 
 function hide(){
+    // Checking all paragraphs
     chrome.tabs.executeScript({
-        code: "pars = document.getElementsByTagName('p'); lowerPars = []; badPars = []; badDisp = []; for(var i = 0; i < pars.length; i++){lowerPars.push(pars[i].innerHTML.toLowerCase()); if(lowerPars[i].indexOf('it') >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
+        code: "pars = document.getElementsByTagName('p'); lowerPars = []; badPars = []; badDisp = []; for(var i = 0; i < pars.length; i++){lowerPars.push(pars[i].innerHTML.toLowerCase()); if(lowerPars[i].indexOf('tell me about') >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
     });
+    // Checking Facebook comments
+    chrome.tabs.executeScript({
+        code: "fbComments = document.querySelectorAll('[aria-label = \"Comment\"]'); lowerComs = []; badComs = []; badComD = []; for (var i = 0; i < fbComments.length; i++){lowerComs.push(fbComments[i].innerHTML.toLowerCase()); if(lowerComs[i].indexOf('tell me about') >= 0){badComs.push(fbComments[i]); badComD.push(fbComments[i].style.display); fbComments[i].style.display = 'none';}}"
+    });
+    // Checking Facebook comment replies
+    chrome.tabs.executeScript({
+        code: "fbSubComments = document.querySelectorAll('[aria-label = \"Comment reply\"]'); lowerSubComs = []; badSubComs = []; badSubComD = []; for (var i = 0; i < fbSubComments.length; i++){lowerSubComs.push(fbSubComments[i].innerHTML.toLowerCase()); if(lowerSubComs[i].indexOf('tell me about') >= 0){badSubComs.push(fbSubComments[i]); badSubComD.push(fbSubComments[i].style.display); fbSubComments[i].style.display = 'none';}}"
+    });
+
+    /*chrome.tabs.executeScript({
+        code: "fbComments.push(getElementsByClassName('_313x'))
+    });*/
 };
 
 function show(){
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badPars.length; j++){badPars[j].style.display = badDisp[j];}"
+    });
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badComs.length; j++){badComs[j].style.display = badComD[j];}"
+    });
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badSubComs.length; j++){badSubComs[j].style.display = badSubComD[j];}"
     });
 };
