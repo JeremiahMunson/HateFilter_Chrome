@@ -8,36 +8,38 @@ chrome.storage.sync.get('activated', function(data){
 
 activate.onclick = function(){
     chrome.storage.sync.get('activated', function(data){activated = data.activated;
-        if(!activated){
-            chrome.storage.sync.set({'activated': true});
-            hide();
-            activate.src = "active48.png";
-        }
-        else{
-            chrome.storage.sync.set({'activated': false});
-            show();
-            activate.src = "deactive48.png";
-        };
+        chrome.storage.sync.get('block', function(block){wordsToBlock = block.block
+            if(!activated){
+                chrome.storage.sync.set({'activated': true});
+                hide(wordsToBlock);
+                activate.src = "active48.png";
+            }
+            else{
+                chrome.storage.sync.set({'activated': false});
+                show();
+                activate.src = "deactive48.png";
+            };
+        });
     });
 };
 
-function hide(){
-    // Checking all paragraphs
-    chrome.tabs.executeScript({
-        code: "pars = document.getElementsByTagName('p'); lowerPars = []; badPars = []; badDisp = []; for(var i = 0; i < pars.length; i++){lowerPars.push(pars[i].innerHTML.toLowerCase()); if(lowerPars[i].indexOf('tell me about') >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
-    });
-    // Checking Facebook comments
-    chrome.tabs.executeScript({
-        code: "fbComments = document.querySelectorAll('[aria-label = \"Comment\"]'); lowerComs = []; badComs = []; badComD = []; for (var i = 0; i < fbComments.length; i++){lowerComs.push(fbComments[i].innerHTML.toLowerCase()); if(lowerComs[i].indexOf('tell me about') >= 0){badComs.push(fbComments[i]); badComD.push(fbComments[i].style.display); fbComments[i].style.display = 'none';}}"
-    });
-    // Checking Facebook comment replies
-    chrome.tabs.executeScript({
-        code: "fbSubComments = document.querySelectorAll('[aria-label = \"Comment reply\"]'); lowerSubComs = []; badSubComs = []; badSubComD = []; for (var i = 0; i < fbSubComments.length; i++){lowerSubComs.push(fbSubComments[i].innerHTML.toLowerCase()); if(lowerSubComs[i].indexOf('tell me about') >= 0){badSubComs.push(fbSubComments[i]); badSubComD.push(fbSubComments[i].style.display); fbSubComments[i].style.display = 'none';}}"
-    });
-
-    /*chrome.tabs.executeScript({
-        code: "fbComments.push(getElementsByClassName('_313x'))
-    });*/
+function hide(block){
+    // Looping through all words/phrases to block
+    //for(var i = 0; i < block.length; i++){
+        // Checking all paragraphs
+        window.alert(block[0]);
+        chrome.tabs.executeScript({
+            code: "pars = document.getElementsByTagName('p'); lowerPars = []; badPars = []; badDisp = []; for(var i = 0; i < pars.length; i++){lowerPars.push(pars[i].innerHTML.toLowerCase()); if(lowerPars[i].indexOf(" + block[0] + ") >= 0){ badPars.push(pars[i]); badDisp.push(pars[i].style.display); pars[i].style.display = 'none';}}"
+        });
+        // Checking Facebook comments
+        chrome.tabs.executeScript({
+            code: "fbComments = document.querySelectorAll('[aria-label = \"Comment\"]'); lowerComs = []; badComs = []; badComD = []; for (var i = 0; i < fbComments.length; i++){lowerComs.push(fbComments[i].innerHTML.toLowerCase()); if(lowerComs[i].indexOf(" + block[0] + ") >= 0){badComs.push(fbComments[i]); badComD.push(fbComments[i].style.display); fbComments[i].style.display = 'none';}}"
+        });
+        // Checking Facebook comment replies
+        chrome.tabs.executeScript({
+            code: "fbSubComments = document.querySelectorAll('[aria-label = \"Comment reply\"]'); lowerSubComs = []; badSubComs = []; badSubComD = []; for (var i = 0; i < fbSubComments.length; i++){lowerSubComs.push(fbSubComments[i].innerHTML.toLowerCase()); if(lowerSubComs[i].indexOf(" + block[0] + ") >= 0){badSubComs.push(fbSubComments[i]); badSubComD.push(fbSubComments[i].style.display); fbSubComments[i].style.display = 'none';}}"
+        });
+    //};
 };
 
 function show(){

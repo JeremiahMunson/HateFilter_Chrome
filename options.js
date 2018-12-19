@@ -6,7 +6,6 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
     if(changeInfo.status == 'complete' && tab.active){
         chrome.storage.sync.get('block', function(data){
             blockedWords = data.block;
-            if(Array.isArray(blockedWords)){window.alert(blockedWords.length);}
             for(var i = 0; i < homophobic.length; i++){
                 homophobic[i].checked = false;
                 for(var j = 0; j < blockedWords.length; j++){
