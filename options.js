@@ -1,9 +1,45 @@
-saveButton = document.getElementById('saveItems');
-homophobic = document.getElementsByClassName('homophobia');
-racist = document.getElementsByClassName('racism');
+var saveButton = document.getElementById('saveItems');
+var homophobic = [];
+var homophobia = document.getElementById('homophobia');
+var racist = [];
+var racism = document.getElementById('racism');
 
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
     if(changeInfo.status == 'complete' && tab.active){
+        chrome.storage.sync.get('homophobic', function(storedHomophobic){
+            homophobicWords = storedHomophobic.homophobic;
+            for(var i = 0; i < homophobicWords.length; i++){
+                var lab = document.createElement("label");
+                var input = document.createElement("input");
+                input.type = "checkbox";
+                input.class = "homophobic";
+                input.value = homophobicWords[i];
+                var node = document.createTextNode(homophobicWords[i]);
+                homophobic.push(input);
+                lab.appendChild(input);
+                lab.appendChild(node);
+                homophobia.appendChild(lab);
+                homophobia.appendChild(document.createElement("br"));
+            };
+        });
+
+        chrome.storage.sync.get('racist', function(storedRacist){
+            racistWords = storedRacist.racist;
+            for(var i = 0; i < racistWords.length; i++){
+                var lab = document.createElement("label");
+                var input = document.createElement("input");
+                input.type = "checkbox";
+                input.class = "racist";
+                input.value = racistWords[i];
+                var node = document.createTextNode(racistWords[i]);
+                racist.push(input);
+                lab.appendChild(input);
+                lab.appendChild(node);
+                racism.appendChild(lab);
+                racism.appendChild(document.createElement("br"));
+            }
+        });
+
         chrome.storage.sync.get('block', function(data){
             blockedWords = data.block;
             for(var i = 0; i < homophobic.length; i++){
@@ -21,6 +57,7 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
         });
     };
 });
+
 
 saveButton.onclick = function(){
     var wordsToBlock = [];

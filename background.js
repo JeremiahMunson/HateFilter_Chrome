@@ -6,8 +6,12 @@ chrome.runtime.onInstalled.addListener(function() {
       }]);
     });
     chrome.storage.sync.set({'activated': false});
-    var blockOptions = ["fag", "faggot", "queer", "peter puffer", "cracker", "nigger", "chink", "wet back", "object"];
+    var homophobic = ['fag', 'faggot', 'queer', 'peter puffer'];
+    var racist = ["cracker", "nigger", "chink", "wet back"];
+    var blockOptions = homophobic.concat(racist);
     chrome.storage.sync.set({'block': blockOptions});
+    chrome.storage.sync.set({'homophobic':homophobic});
+    chrome.storage.sync.set({'racist': racist});
 });
 
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
