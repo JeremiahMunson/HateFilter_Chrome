@@ -8,10 +8,12 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({'activated': false});
     var homophobic = ['fag', 'faggot', 'queer', 'peter puffer'];
     var racist = ["cracker", "nigger", "chink", "wet back"];
-    var blockOptions = homophobic.concat(racist);
+    var sexist = ['bitch', 'cunt', 'whore', 'slut'];
+    var blockOptions = homophobic.concat(racist, sexist);
     chrome.storage.sync.set({'block': blockOptions});
     chrome.storage.sync.set({'homophobic':homophobic});
     chrome.storage.sync.set({'racist': racist});
+    chrome.storage.sync.set({'sexist': sexist});
 });
 
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){

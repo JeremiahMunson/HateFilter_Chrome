@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Blocked Words Options</title>
+        <meta charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="options.css"/>
+    </head>
+
     <body>
-        <h1>Options for words to block</h1>
+        <h1>Options for Words to Block</h1>
+        <div class="row">
+            <div class="column">
+                <h2>Homophobia</h2>
+                <div id="homophobia" >
+                    <!--
+                    <label><input type="checkbox" value="fag" class="homophobia">Fag</label><br>
+                    <label><input type="checkbox" value="faggot" class="homophobia">Faggot</label><br>
+                    <label><input type="checkbox" value="queer" class="homophobia">Queer</label><br>
+                    <label><input type="checkbox" value="peter puffer" class="homophobia">Peter Puffer</label><br>
+                    -->
+                </div>
+                <input type="text" value="new homophobic word" class = "textInput">
+                <button id="addHomophobic" class="addWord">Add Word</button>
+            </div>
 
-        <div id="homophobia">
-        <h2>Homophobia</h2>
-        <!--
-        <label><input type="checkbox" value="fag" class="homophobia">Fag</label><br>
-        <label><input type="checkbox" value="faggot" class="homophobia">Faggot</label><br>
-        <label><input type="checkbox" value="queer" class="homophobia">Queer</label><br>
-        <label><input type="checkbox" value="peter puffer" class="homophobia">Peter Puffer</label><br>
-        -->
+            <div class="column">
+                <h2>Racism</h2>
+                <div  id="racism">
+                    <!--
+                    <label><input type="checkbox" value="cracker" class="racism">Cracker</label><br>
+                    <label><input type="checkbox" value="nigger" class="racism">Nigger</label><br>
+                    <label><input type="checkbox" value="chink" class="racism">Chink</label><br>
+                    <label><input type="checkbox" value="wet back" class="racism">Wet Back</label><br>
+                    -->
+                </div>
+                <input type="text" value="new racist word" class = "textInput">
+                <button id="addRacist" class="addWord">Add Word</button>
+            </div>
+
+            <div class="column">
+                <h2>Sexism</h2>
+                <div id='sexism'>
+
+                </div>
+                <input type="text" value="new sexist word" class = "textInput">
+                <button id="addSexist" class="addWord">Add Word</button>
+            </div>
         </div>
 
-        <div id="racism">
-        <h2>Racism</h2>
-        <!--
-        <label><input type="checkbox" value="cracker" class="racism">Cracker</label><br>
-        <label><input type="checkbox" value="nigger" class="racism">Nigger</label><br>
-        <label><input type="checkbox" value="chink" class="racism">Chink</label><br>
-        <label><input type="checkbox" value="wet back" class="racism">Wet Back</label><br>
-        -->
-        </div>
-
-        <button id="saveItems">Save</button>
+        <button id="saveItems" class="save">Save</button>
 
         <script src="options.js"></script>
     </body>

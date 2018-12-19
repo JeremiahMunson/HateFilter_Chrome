@@ -1,8 +1,14 @@
 var saveButton = document.getElementById('saveItems');
+var addHomophobic = document.getElementById('addHomophobic');
+var addRacist = document.getElementById('addRacist');
+var addGeneral = document.getElementById('addGeneral');
+
 var homophobic = [];
 var homophobia = document.getElementById('homophobia');
 var racist = [];
 var racism = document.getElementById('racism');
+var sexist = [];
+var sexism = document.getElementById('sexism');
 
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
     if(changeInfo.status == 'complete' && tab.active){
@@ -37,7 +43,24 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                 lab.appendChild(node);
                 racism.appendChild(lab);
                 racism.appendChild(document.createElement("br"));
-            }
+            };
+        });
+
+        chrome.storage.sync.get('sexist', function(storedSexist){
+            sexistWords = storedSexist.sexist;
+            for(var i = 0; i < sexistWords.length; i++){
+                var lab = document.createElement("label");
+                var input = document.createElement("input");
+                input.type = "checkbox";
+                input.class = "sexist";
+                input.value = sexistWords[i];
+                var node = document.createTextNode(sexistWords[i]);
+                sexist.push(input);
+                lab.appendChild(input);
+                lab.appendChild(node);
+                sexism.appendChild(lab);
+                sexism.appendChild(document.createElement("br"));
+            };
         });
 
         chrome.storage.sync.get('block', function(data){
@@ -54,6 +77,12 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                     if(racist[i].value == blockedWords[j]){racist[i].checked = true;};
                 };
             };
+            for(var i = 0; i < sexist.length; i++){
+                sexist[i].checked = false;
+                for(var j = 0; j < blockedWords.length; j++){
+                    if(sexist[i].value == blockedWords[j]){sexist[i].checked = true;};
+                }
+            }
         });
     };
 });
@@ -69,6 +98,11 @@ saveButton.onclick = function(){
     for(var i = 0; i < racist.length; i++){
         if(racist[i].checked == true){
             wordsToBlock.push(racist[i].value);
+        };
+    };
+    for(var i = 0; i < sexist.length; i++){
+        if(sexist[i].checked == true){
+            wordsToBlock.push(sexist[i].value);
         };
     };
     chrome.storage.sync.set({'block':wordsToBlock})
