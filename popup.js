@@ -1,4 +1,9 @@
 let activate = document.getElementById('activate');
+let optionButton = document.getElementById('options');
+
+optionButton.onclick = function(){
+    chrome.tabs.create({url: "options.html"});
+};
 
 chrome.storage.sync.get('activated', function(data){
     activated = data.activated;
