@@ -16,6 +16,11 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({'racist': racist});
     chrome.storage.sync.set({'sexist': sexist});
     chrome.storage.sync.set({'other2': other2});
+
+    chrome.storage.sync.set({'repeatHomophobic': false});
+    chrome.storage.sync.set({'repeatRacist': false});
+    chrome.storage.sync.set({'repeatSexist': false});
+    chrome.storage.sync.set({'repeatOther2': false});
 });
 
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){

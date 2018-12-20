@@ -13,6 +13,11 @@ var sexism = document.getElementById('sexism');
 var other2 = [];
 var other1 = document.getElementById('other1');
 
+var repeatHomophobic = false;
+var repeatRacist = false;
+var repeatSexist = false;
+var repeatOther2 = false;
+
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
     if(changeInfo.status == 'complete' && tab.active){
         chrome.storage.sync.get('homophobic', function(storedHomophobic){
@@ -110,12 +115,34 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                 };
             };
         });
+
+        chrome.storage.sync.get('repeatHomophobic', function(repeat){
+            if(!repeat.repeatHomophobic){document.getElementById('HomophobicRepeat').style.display = "none";}
+            else{document.getElementById('HomophobicRepeat').style.display = "block";};
+        });
+        chrome.storage.sync.get('repeatRacist', function(repeat){
+            if(!repeat.repeatRacist){document.getElementById('RacistRepeat').style.display = "none";}
+            else{document.getElementById('RacistRepeat').style.display = "block";};
+        });
+        chrome.storage.sync.get('repeatSexist', function(repeat){
+            if(!repeat.repeatSexist){document.getElementById('SexistRepeat').style.display = 'none';}
+            else{document.getElementById('SexistRepeat').style.display = 'block';};
+        });
+        chrome.storage.sync.get('repeatOther2', function(repeat){
+            if(!repeat.repeatOther2){document.getElementById('Other2Repeat').style.display = 'none';}
+            else{document.getElementById('Other2Repeat').style.display = 'block';};
+        })
     };
 });
 
 
 saveButton.onclick = function(){
     var wordsToBlock = [];
+    chrome.storage.sync.set({'repeatHomophobic':false});
+    chrome.storage.sync.set({'repeatRacist':false});
+    chrome.storage.sync.set({'repeatSexist':false});
+    chrome.storage.sync.set({'repeatOther2':false});
+
     for(var i = 0; i < homophobic.length; i++){
         if(homophobic[i].checked){
             wordsToBlock.push(homophobic[i].value);
@@ -141,10 +168,24 @@ saveButton.onclick = function(){
 
 addHomophobic.onclick = function(){
     var homophobicToAdd = document.getElementById('homophobicWord').value.toLowerCase();
+    var wordRepeat = false;
+    chrome.storage.sync.set({'repeatRacist':false});
+    chrome.storage.sync.set({'repeatSexist':false});
+    chrome.storage.sync.set({'repeatOther2':false});
+
     chrome.storage.sync.get('homophobic', function(homophobicWords){
         var words = homophobicWords.homophobic;
-        words.push(homophobicToAdd);
-        chrome.storage.sync.set({'homophobic': words});
+        for(var i = 0; i < words.length; i++){
+            if(homophobicToAdd == words[i]){
+                wordRepeat = true;
+                break;
+            };
+        };
+        if(!wordRepeat){
+            words.push(homophobicToAdd);
+            chrome.storage.sync.set({'homophobic': words});
+        };
+        chrome.storage.sync.set({'repeatHomophobic': wordRepeat});
     });
     chrome.storage.sync.get('block', function(blocking){
         var block = blocking.block;
@@ -156,10 +197,24 @@ addHomophobic.onclick = function(){
 
 addRacist.onclick = function(){
     var racistToAdd = document.getElementById('racistWord').value.toLowerCase();
+    var wordRepeat = false;
+    chrome.storage.sync.set({'repeatHomophobic':false});
+    chrome.storage.sync.set({'repeatSexist':false});
+    chrome.storage.sync.set({'repeatOther2':false});
+
     chrome.storage.sync.get('racist', function(racistWords){
         var words = racistWords.racist;
-        words.push(racistToAdd);
-        chrome.storage.sync.set({'racist':words});
+        for(var i = 0; i < words.length; i++){
+            if(racistToAdd == words[i]){
+                wordRepeat = true;
+                break;
+            };
+        };
+        if(!wordRepeat){
+            words.push(racistToAdd);
+            chrome.storage.sync.set({'racist':words});
+        };
+        chrome.storage.sync.set({'repeatRacist': wordRepeat});
     });
     chrome.storage.sync.get('block', function(blocking){
         var block = blocking.block;
@@ -171,10 +226,24 @@ addRacist.onclick = function(){
 
 addSexist.onclick = function(){
     var sexistToAdd = document.getElementById('sexistWord').value.toLowerCase();
+    var wordRepeat = false;
+    chrome.storage.sync.set({'repeatHomophobic':false});
+    chrome.storage.sync.set({'repeatRacist':false});
+    chrome.storage.sync.set({'repeatOther2':false});
+
     chrome.storage.sync.get('sexist', function(sexistWords){
         var words = sexistWords.sexist;
-        words.push(sexistToAdd);
-        chrome.storage.sync.set({'sexist':words});
+        for(var i = 0; i < words.length; i++){
+            if(sexistToAdd == words[i]){
+                wordRepeat = true;
+                break;
+            };
+        };
+        if(!wordRepeat){
+            words.push(sexistToAdd);
+            chrome.storage.sync.set({'sexist':words});
+        };
+        chrome.storage.sync.set({"repeatSexist": wordRepeat});
     });
     chrome.storage.sync.get('block', function(blocking){
         var block = blocking.block;
@@ -186,10 +255,24 @@ addSexist.onclick = function(){
 
 addOther2.onclick = function(){
     var other2ToAdd = document.getElementById('other2Word').value.toLowerCase();
+    var wordRepeat = false;
+    chrome.storage.sync.set({'repeatHomophobic':false});
+    chrome.storage.sync.set({'repeatRacist':false});
+    chrome.storage.sync.set({'repeatSexist':false});
+
     chrome.storage.sync.get('other2', function(other2Words){
         var words = other2Words.other2;
-        words.push(other2ToAdd);
-        chrome.storage.sync.set({'other2':words});
+        for(var i = 0; i < words.length; i++){
+            if(other2ToAdd == words[i]){
+                wordRepeat = true;
+                break;
+            };
+        };
+        if(!wordRepeat){
+            words.push(other2ToAdd);
+            chrome.storage.sync.set({'other2':words});
+        };
+        chrome.storage.sync.set({"repeatOther2": wordRepeat});
     });
     chrome.storage.sync.get('block', function(blocking){
         var block = blocking.block;
