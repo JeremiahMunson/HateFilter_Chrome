@@ -2,7 +2,7 @@ var saveButton = document.getElementById('saveItems');
 var addHomophobic = document.getElementById('addHomophobic');
 var addRacist = document.getElementById('addRacist');
 var addSexist = document.getElementById('addSexist');
-var addOther2 = document.getElementById('addOther2')
+var addOther2 = document.getElementById('addOther2');
 
 var homophobic = [];
 var homophobia = document.getElementById('homophobia');
