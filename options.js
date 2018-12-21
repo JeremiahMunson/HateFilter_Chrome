@@ -1,15 +1,21 @@
 var saveButton = document.getElementById('saveItems');
 
+// The following are the add boxes for each category
 var addHomophobic = document.getElementById('addHomophobic');
 var addRacist = document.getElementById('addRacist');
 var addSexist = document.getElementById('addSexist');
 var addOther2 = document.getElementById('addOther2');
 
+// The following are the text boxes for each category
 var homophobicTxt = document.getElementById('homophobicWord');
 var racistTxt = document.getElementById('racistWord');
 var sexistTxt = document.getElementById('sexistWord');
 var other2Txt = document.getElementById('other2Word');
 
+// Some examples of what the follow variables do...
+// Example: homophobic - list of homophobic words/phrases
+// Example: homophobia - div where list of homophobic words 
+//  is included in webpage.
 var homophobic = [];
 var homophobia = document.getElementById('homophobia');
 var racist = [];
@@ -19,10 +25,17 @@ var sexism = document.getElementById('sexism');
 var other2 = [];
 var other1 = document.getElementById('other1');
 
+// This 'begin' is so that the section below only occurs when
+//  the page is manually reloaded. I had a problem where letting
+//  the page sit open while doing other things it would keep
+//  updating and there would be the same word/phrase shown
+//  multiple times.
 var begin = true;
 chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
     if (changeInfo.status == 'complete' && tab.active && begin) {
         begin = false;
+        // The following get the words/phrases from each category
+        //  and adds them to the webpage.
         chrome.storage.sync.get('homophobic', function(storedHomophobic){
             homophobicWords = storedHomophobic.homophobic;
             for(var i = 0; i < homophobicWords.length; i++){
@@ -39,7 +52,6 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                 homophobia.appendChild(document.createElement("br"));
             };
         });
-
         chrome.storage.sync.get('racist', function(storedRacist){
             racistWords = storedRacist.racist;
             for(var i = 0; i < racistWords.length; i++){
@@ -56,7 +68,6 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                 racism.appendChild(document.createElement("br"));
             };
         });
-
         chrome.storage.sync.get('sexist', function(storedSexist){
             sexistWords = storedSexist.sexist;
             for(var i = 0; i < sexistWords.length; i++){
@@ -73,7 +84,6 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                 sexism.appendChild(document.createElement("br"));
             };
         });
-
         chrome.storage.sync.get('other2', function(storedOther2){
             other2Words = storedOther2.other2;
             for(var i = 0; i < other2Words.length; i++){
@@ -91,6 +101,8 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
             };
         });
 
+        // Goes through all of the words/phrases to block
+        //  and selects the words on the webpage that should be blocked.
         chrome.storage.sync.get('block', function(data){
             blockedWords = data.block;
             for(var i = 0; i < homophobic.length; i++){
@@ -118,6 +130,9 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
                  };
             };
         });
+
+        // Hides the error/alet section that should only be shown if user
+        //  tries adding word/phrase that is already in that category.
         document.getElementById('HomophobicRepeat').style.display = "none";
         document.getElementById('RacistRepeat').style.display = "none";
         document.getElementById('SexistRepeat').style.display = 'none';
@@ -125,27 +140,26 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
     };
 });
 
+// The following makes it so pressing the enter key in a text box
+//  that adds a word/phrase acts as pressing the add button.
 homophobicTxt.addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.keyCode === 13) {
         addHomophobic.click();
     }
 });
-
 racistTxt.addEventListener("keyup", function(event){
     event.preventDefault();
     if(event.keyCode === 13){
         addRacist.click();
     }
 });
-
 sexistTxt.addEventListener("keyup", function(event){
     event.preventDefault();
     if(event.keyCode === 13){
         addSexist.click();
     }
 });
-
 other2Txt.addEventListener("keyup", function(event){
     event.preventDefault();
     if(event.keyCode === 13){
@@ -153,6 +167,8 @@ other2Txt.addEventListener("keyup", function(event){
     }
 });
 
+// This updates the storage so that the words/phrases selected
+//  or deselected are updated to be blocked or not blocked.
 saveButton.onclick = function(){
     var wordsToBlock = [];
     document.getElementById('HomophobicRepeat').style.display = "none";
@@ -183,6 +199,9 @@ saveButton.onclick = function(){
     chrome.storage.sync.set({'block':wordsToBlock})
 };
 
+// The following adds words/phrases to each category and selects
+//  them. Also checks if word/phrase already exists in that
+//  particular category and shows alert if it is already there.
 addHomophobic.onclick = function(){
     var homophobicToAdd = document.getElementById('homophobicWord').value.toLowerCase();
     var wordRepeat = false;
@@ -228,7 +247,6 @@ addHomophobic.onclick = function(){
         chrome.storage.sync.set({'block': block});
     });
 };
-
 addRacist.onclick = function(){
     var racistToAdd = document.getElementById('racistWord').value.toLowerCase();
     var wordRepeat = false;
@@ -274,7 +292,6 @@ addRacist.onclick = function(){
         chrome.storage.sync.set({'block': block});
     });
 };
-
 addSexist.onclick = function(){
     var sexistToAdd = document.getElementById('sexistWord').value.toLowerCase();
     var wordRepeat = false;
@@ -320,7 +337,6 @@ addSexist.onclick = function(){
         chrome.storage.sync.set({'block': block});
     });
 };
-
 addOther2.onclick = function(){
     var other2ToAdd = document.getElementById('other2Word').value.toLowerCase();
     var wordRepeat = false;
