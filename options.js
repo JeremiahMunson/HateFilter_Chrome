@@ -1,4 +1,8 @@
+var add = true;
+
 var saveButton = document.getElementById('saveItems');
+var removeButton = document.getElementById('removeItems');
+var cancelButton = document.getElementById('cancelRemove');
 
 // The following are the add boxes for each category
 var addHomophobic = document.getElementById('addHomophobic');
@@ -137,6 +141,8 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
         document.getElementById('RacistRepeat').style.display = "none";
         document.getElementById('SexistRepeat').style.display = 'none';
         document.getElementById('Other2Repeat').style.display = 'none';
+
+        cancelButton.style.display = "none";
     };
 });
 
@@ -382,3 +388,82 @@ addOther2.onclick = function(){
         chrome.storage.sync.set({'block':block});
     });
 };
+
+removeButton.onclick = function(){
+// add == true when switching to the remove
+// add == false means selected words/phrases are removed
+    if(add){
+        for(var i = 0; i < homophobic.length; i++){ homophobic[i].checked = false; }
+        for(var i = 0; i < racist.length; i++){ racist[i].checked = false; }
+        for(var i = 0; i < sexist.length; i++){ sexist[i].checked = false; }
+        for(var i = 0; i < other2.length; i++){ other2[i].checked = false; }
+
+        saveButton.style.display = "none";
+        cancelButton.style.display = "inline";
+        add = false;
+    }   
+    else{
+        chrome.storage.sync.get('block', function(data){
+            blockedWords = data.block;
+            for(var i = 0; i < homophobic.length; i++){
+                homophobic[i].checked = false;
+                for(var j = 0; j < blockedWords.length; j++){
+                    if(homophobic[i].value == blockedWords[j]){homophobic[i].checked = true;};
+                };
+            };
+            for(var i = 0; i < racist.length; i++){
+                racist[i].checked = false;
+                for(var j = 0; j < blockedWords.length; j++){
+                    if(racist[i].value == blockedWords[j]){racist[i].checked = true;};
+                };
+            };
+            for(var i = 0; i < sexist.length; i++){
+                sexist[i].checked = false;
+                for(var j = 0; j < blockedWords.length; j++){
+                    if(sexist[i].value == blockedWords[j]){sexist[i].checked = true;};
+                };
+            };
+            for(var i = 0; i < other2.length; i++){
+                other2[i].checked = false;
+                for(var j = 0; j < blockedWords.length; j++){
+                    if(other2[i].value == blockedWords[j]){other2[i].checked = true;};
+                 };
+            };
+        });
+        saveButton.style.display = "inline";
+        cancelButton.style.display = "none";
+        add = true;
+    };
+};
+
+cancelButton.onclick = function(){
+    chrome.storage.sync.get('block', function(data){
+        blockedWords = data.block;
+        for(var i = 0; i < homophobic.length; i++){
+            homophobic[i].checked = false;
+            for(var j = 0; j < blockedWords.length; j++){
+                if(homophobic[i].value == blockedWords[j]){homophobic[i].checked = true;};
+            };
+        };
+        for(var i = 0; i < racist.length; i++){
+            racist[i].checked = false;
+            for(var j = 0; j < blockedWords.length; j++){
+                if(racist[i].value == blockedWords[j]){racist[i].checked = true;};
+            };
+        };
+        for(var i = 0; i < sexist.length; i++){
+            sexist[i].checked = false;
+            for(var j = 0; j < blockedWords.length; j++){
+                if(sexist[i].value == blockedWords[j]){sexist[i].checked = true;};
+            };
+        };
+        for(var i = 0; i < other2.length; i++){
+            other2[i].checked = false;
+            for(var j = 0; j < blockedWords.length; j++){
+                if(other2[i].value == blockedWords[j]){other2[i].checked = true;};
+             };
+        };
+    });
+    saveButton.style.display = "inline";
+    cancelButton.style.display = "none";
+}
