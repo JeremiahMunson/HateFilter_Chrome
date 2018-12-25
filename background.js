@@ -60,6 +60,23 @@ function hide(block){
         chrome.tabs.executeScript({
             code: "qTweet = document.getElementsByClassName('QuoteTweet-container'); for(var i = 0; i<qTweet.length; i++){lowerQT.push(qTweet[i].innerHTML.toLowerCase()); if(lowerQT[i].indexOf('"+block[i]+"') >= 0){badQT.push(qTweet[i]); badQTDisp.push(qTweet[i].style.display); qTweet[i].style.display = 'none';}}"
         });
+        // Checking H1
+        chrome.tabs.executeScript({
+            code: "header1 = document.getElementsByTagName('h1'); for(var i = 0; i < header1.length; i++){lowerH1.push(header1[i].innerHTML.toLowerCase()); if(lowerH1[i].indexOf('"+block[i]+"') >= 0){badH1.push(header1[i]); badH1Disp.push(header1[i].style.display); header1[i].style.display = 'none';}}"
+        });
+        // Youtube description
+        chrome.tabs.executeScript({
+            code: "descYT = document.getElementById('description'); for(var i = 0; i < descYT.length; i++){lowerYTD.push(descYT[i].innerHTML.toLowerCase()); if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){badYTD.push(descYT[i]); badYTDDisp.push(descYT[i].style.display); descYT[i].style.display = 'none';}}"
+            //lowerYTD = []; badYTD = []; badYTDDisp = [];
+        });
+        // YouTube comments
+        chrome.tabs.executeScript({
+            code: "commentYT = document.getElementsByClassName('style-scope ytd-comment-thread-renderer'); for(var i = 0; i < commentYT.length; i++){lowerYTC.push(commentYT[i].innerHTML.toLowerCase()); if(lowerYTC[i].indexOf('"+block[i]+"') >= 0){badYTC.push(commentYT[i]); badYTCDisp.push(commentYT[i].style.display); commentYT[i].style.display = 'none';}}"
+        });
+        // developer.chrome text in tables
+        chrome.tabs.executeScript({
+            code: "table = document.getElementsByTagName('td'); for(var i = 0; i < table.length; i++){lowerTable.push(table[i].innerHTML.toLowerCase()); if(lowerTable[i].indexOf('"+block[i]+"') >= 0){badTable.push(table[i]); badTableDisp.push(table[i].style.display); table[i].style.display = 'none';}}"
+        });
     };
 };
 
@@ -87,5 +104,21 @@ function show(){
     // Quoted Tweets
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badQT.length; j++){badQT[j].style.display = badQTDisp[j];}"
+    });
+    // H1
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badH1.length; j++){badH1[j].style.display = badH1Disp[j];}"
+    });
+    //YouTube Description
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badYTD.length; j++){badYTD[j].style.display = badYTDDisp[j];}"
+    });
+    //YouTube Comments
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badYTC.length; j++){badYTC[j].style.display = badYTCDisp[j];}"
+    });
+    // developer.chrome table
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badTable.length; j++){badTable[j].style.display = badTableDisp[j];}"
     });
 };

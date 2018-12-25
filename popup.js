@@ -31,7 +31,7 @@ activate.onclick = function(){
 function hide(block){
     // Setting the arrays to be empty. Have to do it before the loop otherwise the arrays before the last loop will be lost because they'll be reset to empty each loop.
     chrome.tabs.executeScript({
-        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = []; lowerH1 = []; badH1 = []; badH1Disp = []; lowerYTD = []; badYTD = []; badYTDDisp = []; lowerYTC = []; badYTC = []; badYTCDisp = [];"
+        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = []; lowerH1 = []; badH1 = []; badH1Disp = []; lowerYTD = []; badYTD = []; badYTDDisp = []; lowerYTC = []; badYTC = []; badYTCDisp = []; lowerTable = []; badTable = []; badTableDisp = [];"
     });
     // Looping through all words/phrases to block
     for(var i = 0; i < block.length; i++){
@@ -72,6 +72,10 @@ function hide(block){
         chrome.tabs.executeScript({
             code: "commentYT = document.getElementsByClassName('style-scope ytd-comment-thread-renderer'); for(var i = 0; i < commentYT.length; i++){lowerYTC.push(commentYT[i].innerHTML.toLowerCase()); if(lowerYTC[i].indexOf('"+block[i]+"') >= 0){badYTC.push(commentYT[i]); badYTCDisp.push(commentYT[i].style.display); commentYT[i].style.display = 'none';}}"
         });
+        // developer.chrome text in tables
+        chrome.tabs.executeScript({
+            code: "table = document.getElementsByTagName('td'); for(var i = 0; i < table.length; i++){lowerTable.push(table[i].innerHTML.toLowerCase()); if(lowerTable[i].indexOf('"+block[i]+"') >= 0){badTable.push(table[i]); badTableDisp.push(table[i].style.display); table[i].style.display = 'none';}}"
+        });
     };
 };
 
@@ -111,5 +115,9 @@ function show(){
     //YouTube Comments
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badYTC.length; j++){badYTC[j].style.display = badYTCDisp[j];}"
+    });
+    // developer.chrome table
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badTable.length; j++){badTable[j].style.display = badTableDisp[j];}"
     });
 };
