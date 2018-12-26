@@ -409,57 +409,57 @@ removeButton.onclick = function(){
     else{
         chrome.storage.sync.get('block', function(data){
             blockedWords = data.block;
-            homophobicNotDeleted = [];
-            racistNotDeleted = [];
-            sexistNotDeleted = [];
-            other2NotDeleted = [];
+            var homophobicRemaining = [];
+            var racistRemaining = [];
+            var sexistRemaining = [];
+            var other2Remaining = [];
+            var blockRemaining = [];
 
             // HOMOPHOBIC
             for(var i = 0; i < homophobic.length; i++){
                 if(homophobic[i].checked == false){
-                    homophobicNotDeleted.push(homophobic[i].value);
+                    homophobicRemaining.push(homophobic[i].value);
                     for(var j = 0; j < blockedWords.length; j++){
-                        if(homophobic[i].value == blockedWords[j]){homophobic[i].checked = true;};
+                        if(homophobic[i].value == blockedWords[j]){blockRemaining.push(homophobic[i].value);};
                     };
                 };
             };
-            chrome.storage.sync.set({"homophobic": homophobicNotDeleted});
+            chrome.storage.sync.set({"homophobic": homophobicRemaining});
 
             // RACIST
             for(var i = 0; i < racist.length; i++){
                 if(racist[i].checked == false){
-                    racistNotDeleted.push(racist[i].value);
+                    racistRemaining.push(racist[i].value);
                     for(var j = 0; j < blockedWords.length; j++){
-                        if(racist[i].value == blockedWords[j]){racist[i].checked = true;};
+                        if(racist[i].value == blockedWords[j]){blockRemaining.push(racist[i].value);};
                     };
                 };
             };
-            chrome.storage.sync.set({"racist": racistNotDeleted});
+            chrome.storage.sync.set({"racist": racistRemaining});
             
             // SEXIST
             for(var i = 0; i < sexist.length; i++){
                 if(sexist[i].checked == false){
-                    sexistNotDeleted.push(sexist[i].value);
+                    sexistRemaining.push(sexist[i].value);
                     for(var j = 0; j < blockedWords.length; j++){
-                        if(sexist[i].value == blockedWords[j]){sexist[i].checked = true;};
+                        if(sexist[i].value == blockedWords[j]){blockRemaining.push(sexist[i].value);};
                     };
                 };
             };
-            chrome.storage.sync.set({"sexist":sexistNotDeleted});
+            chrome.storage.sync.set({"sexist":sexistRemaining});
 
             // OTHER2
             for(var i = 0; i < other2.length; i++){
                 if(other2[i].checked == false){
-                    other2NotDeleted.push(other2[i].value);
+                    other2Remaining.push(other2[i].value);
                     for(var j = 0; j < blockedWords.length; j++){
-                        if(other2[i].value == blockedWords[j]){other2[i].checked = true;};
+                        if(other2[i].value == blockedWords[j]){blockRemaining.push(other2[i].value);};
                     };
                 };
             };
-            chrome.storage.sync.set({"other2":other2NotDeleted});
+            chrome.storage.sync.set({"other2":other2Remaining});
 
-            blockNotDeleted = homophobicNotDeleted.concat(racistNotDeleted, sexistNotDeleted, other2NotDeleted);
-            chrome.storage.sync.set({'block': blockNotDeleted});
+            chrome.storage.sync.set({'block': blockRemaining});
         });
         saveButton.style.display = "inline";
         cancelButton.style.display = "none";
@@ -493,7 +493,7 @@ cancelButton.onclick = function(){
             other2[i].checked = false;
             for(var j = 0; j < blockedWords.length; j++){
                 if(other2[i].value == blockedWords[j]){other2[i].checked = true;};
-             };
+            };
         };
     });
     saveButton.style.display = "inline";
