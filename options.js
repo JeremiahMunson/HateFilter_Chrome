@@ -390,8 +390,12 @@ addOther2.onclick = function(){
 };
 
 removeButton.onclick = function(){
-// add == true when switching to the remove
-// add == false means selected words/phrases are removed
+    document.getElementById('HomophobicRepeat').style.display = "none";
+    document.getElementById('RacistRepeat').style.display = "none";
+    document.getElementById('SexistRepeat').style.display = 'none';
+    document.getElementById('Other2Repeat').style.display = 'none';
+    // add == true when switching to the remove
+    // add == false means selected words/phrases are removed
     if(add){
         for(var i = 0; i < homophobic.length; i++){ homophobic[i].checked = false; }
         for(var i = 0; i < racist.length; i++){ racist[i].checked = false; }
@@ -405,34 +409,62 @@ removeButton.onclick = function(){
     else{
         chrome.storage.sync.get('block', function(data){
             blockedWords = data.block;
+            homophobicNotDeleted = [];
+            racistNotDeleted = [];
+            sexistNotDeleted = [];
+            other2NotDeleted = [];
+
+            // HOMOPHOBIC
             for(var i = 0; i < homophobic.length; i++){
-                homophobic[i].checked = false;
-                for(var j = 0; j < blockedWords.length; j++){
-                    if(homophobic[i].value == blockedWords[j]){homophobic[i].checked = true;};
+                if(homophobic[i].checked == false){
+                    homophobicNotDeleted.push(homophobic[i].value);
+                    for(var j = 0; j < blockedWords.length; j++){
+                        if(homophobic[i].value == blockedWords[j]){homophobic[i].checked = true;};
+                    };
                 };
             };
+            chrome.storage.sync.set({"homophobic": homophobicNotDeleted});
+
+            // RACIST
             for(var i = 0; i < racist.length; i++){
-                racist[i].checked = false;
-                for(var j = 0; j < blockedWords.length; j++){
-                    if(racist[i].value == blockedWords[j]){racist[i].checked = true;};
+                if(racist[i].checked == false){
+                    racistNotDeleted.push(racist[i].value);
+                    for(var j = 0; j < blockedWords.length; j++){
+                        if(racist[i].value == blockedWords[j]){racist[i].checked = true;};
+                    };
                 };
             };
+            chrome.storage.sync.set({"racist": racistNotDeleted});
+            
+            // SEXIST
             for(var i = 0; i < sexist.length; i++){
-                sexist[i].checked = false;
-                for(var j = 0; j < blockedWords.length; j++){
-                    if(sexist[i].value == blockedWords[j]){sexist[i].checked = true;};
+                if(sexist[i].checked == false){
+                    sexistNotDeleted.push(sexist[i].value);
+                    for(var j = 0; j < blockedWords.length; j++){
+                        if(sexist[i].value == blockedWords[j]){sexist[i].checked = true;};
+                    };
                 };
             };
+            chrome.storage.sync.set({"sexist":sexistNotDeleted});
+
+            // OTHER2
             for(var i = 0; i < other2.length; i++){
-                other2[i].checked = false;
-                for(var j = 0; j < blockedWords.length; j++){
-                    if(other2[i].value == blockedWords[j]){other2[i].checked = true;};
-                 };
+                if(other2[i].checked == false){
+                    other2NotDeleted.push(other2[i].value);
+                    for(var j = 0; j < blockedWords.length; j++){
+                        if(other2[i].value == blockedWords[j]){other2[i].checked = true;};
+                    };
+                };
             };
+            chrome.storage.sync.set({"other2":other2NotDeleted});
+
+            blockNotDeleted = homophobicNotDeleted.concat(racistNotDeleted, sexistNotDeleted, other2NotDeleted);
+            chrome.storage.sync.set({'block': blockNotDeleted});
         });
         saveButton.style.display = "inline";
         cancelButton.style.display = "none";
         add = true;
+        location.reload();
     };
 };
 
