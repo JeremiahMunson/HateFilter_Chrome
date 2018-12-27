@@ -129,9 +129,9 @@ function hide(block){
                     "   }" +
                     "}"
         });
-        // Youtube description (DOESN'T WORK)
+        // Youtube description
         chrome.tabs.executeScript({
-            code:   "descYT = document.getElementByTagName('yt-formatted-string');" +
+            code:   "descYT = document.getElementsByTagName('yt-formatted-string');" +
                     "for(var i = 0; i < descYT.length; i++){" +
                     "   lowerYTD.push(descYT[i].innerHTML.toLowerCase());" +
                     "   if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){" +
@@ -142,6 +142,7 @@ function hide(block){
                     "}"
         });
         // YouTube comments
+        // YouTube description should also work but this hides users name in case their name is offensive
         chrome.tabs.executeScript({
             code:   "commentYT = document.getElementsByClassName('style-scope ytd-comment-thread-renderer');" +
                     "for(var i = 0; i < commentYT.length; i++){" +
