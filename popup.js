@@ -38,6 +38,8 @@ function hide(block){
                 "lowerDT = []; badDT = []; badTDisp = [];" +
                 "lowerQT = []; badQT = []; badQTDisp = [];" +
                 "lowerH1 = []; badH1 = []; badH1Disp = [];" +
+                "lowerH2 = []; badH2 = []; badH2Disp = [];" +
+                "lowerH3 = []; badH3 = []; badH3Disp = [];" +
                 "lowerYTD = []; badYTD = []; badYTDDisp = [];" +
                 "lowerYTC = []; badYTC = []; badYTCDisp = [];" +
                 "lowerTable = []; badTable = []; badTableDisp = [];" +
@@ -50,7 +52,7 @@ function hide(block){
             code:   "pars = document.getElementsByTagName('p');" +
                     "for(var i = 0; i < pars.length; i++){" +
                     "   lowerPars.push(pars[i].innerHTML.toLowerCase());" +
-                    "   if(lowerPars[i].indexOf('" + block[i] + "') >= 0){" +
+                    "   if(lowerPars[i].indexOf('" + block[i] + "') >= 0 && pars[i].style.display != 'none'){" +
                     "       badPars.push(pars[i]);" +
                     "       badDisp.push(pars[i].style.display);" +
                     "       pars[i].style.display = 'none';" +
@@ -62,7 +64,7 @@ function hide(block){
             code:   "fbComments = document.querySelectorAll('[aria-label = \"Comment\"]');" +
                     "for (var i = 0; i < fbComments.length; i++){" +
                     "   lowerComs.push(fbComments[i].innerHTML.toLowerCase());" +
-                    "   if(lowerComs[i].indexOf('" + block[i] + "') >= 0){" +
+                    "   if(lowerComs[i].indexOf('" + block[i] + "') >= 0 && fbComments[i].style.display != 'none'){" +
                     "       badComs.push(fbComments[i]);" +
                     "       badComD.push(fbComments[i].style.display);" +
                     "       fbComments[i].style.display = 'none';" +
@@ -74,7 +76,7 @@ function hide(block){
             code:   "fbSubComments = document.querySelectorAll('[aria-label = \"Comment reply\"]');" +
                     "for (var i = 0; i < fbSubComments.length; i++){" +
                     "   lowerSubComs.push(fbSubComments[i].innerHTML.toLowerCase());" +
-                    "   if(lowerSubComs[i].indexOf('" + block[i] + "') >= 0){" +
+                    "   if(lowerSubComs[i].indexOf('" + block[i] + "') >= 0 && fbSubComments[i].style.display != 'none'){" +
                     "       badSubComs.push(fbSubComments[i]);" +
                     "       badSubComD.push(fbSubComments[i].style.display);" +
                     "       fbSubComments[i].style.display = 'none';" +
@@ -86,7 +88,7 @@ function hide(block){
             code:   "dd = document.getElementsByTagName('dd');" +
                     "for(var i = 0; i < dd.length; i++){" +
                     "   lowerDD.push(dd[i].innerHTML.toLowerCase());" +
-                    "   if(lowerDD[i].indexOf('" + block[i] + "') >= 0){" +
+                    "   if(lowerDD[i].indexOf('" + block[i] + "') >= 0 && dd[i].style.display != 'none'){" +
                     "       badDD.push(dd[i]);" +
                     "       badDDisp.push(dd[i].style.display);" +
                     "       dd[i].style.display = 'none';" +
@@ -98,7 +100,7 @@ function hide(block){
             code:   "dt = document.getElementsByTagName('dt');" +
                     "for (var i = 0; i < dt.length; i++){" +
                     "   lowerDT.push(dt[i].innerHTML.toLowerCase());" +
-                    "   if(lowerDT[i].indexOf('" + block[i] + "') >= 0){" +
+                    "   if(lowerDT[i].indexOf('" + block[i] + "') >= 0 && dt[i].style.display != 'none'){" +
                     "       badDT.push(dt[i]);" +
                     "       badTDisp.push(dt[i].style.display);" +
                     "       dt[i].style.display = 'none';" +
@@ -110,7 +112,7 @@ function hide(block){
             code:   "qTweet = document.getElementsByClassName('QuoteTweet-container');" +
                     "for(var i = 0; i<qTweet.length; i++){" +
                     "   lowerQT.push(qTweet[i].innerHTML.toLowerCase());" +
-                    "   if(lowerQT[i].indexOf('"+block[i]+"') >= 0){" +
+                    "   if(lowerQT[i].indexOf('"+block[i]+"') >= 0 && qTweet[i].style.display != 'none'){" +
                     "       badQT.push(qTweet[i]);" +
                     "       badQTDisp.push(qTweet[i].style.display);" +
                     "       qTweet[i].style.display = 'none';" +
@@ -122,10 +124,34 @@ function hide(block){
             code:   "header1 = document.getElementsByTagName('h1');" +
                     "for(var i = 0; i < header1.length; i++){" +
                     "   lowerH1.push(header1[i].innerHTML.toLowerCase());" +
-                    "   if(lowerH1[i].indexOf('"+block[i]+"') >= 0){" +
+                    "   if(lowerH1[i].indexOf('"+block[i]+"') >= 0 && header1[i].style.display != 'none'){" +
                     "       badH1.push(header1[i]);" +
                     "       badH1Disp.push(header1[i].style.display);" +
                     "       header1[i].style.display = 'none';" +
+                    "   }" +
+                    "}"
+        });
+        // Checking H2
+        chrome.tabs.executeScript({
+            code:   "header2 = document.getElementsByTagName('h2');" +
+                    "for(var i = 0; i < header2.length; i++){" +
+                    "   lowerH2.push(header2[i].innerHTML.toLowerCase());" +
+                    "   if(lowerH2[i].indexOf('"+block[i]+"') >= 0 && header2[i].style.display != 'none'){" +
+                    "       badH2.push(header2[i]);" +
+                    "       badH2Disp.push(header2[i].style.display);" +
+                    "       header2[i].style.display = 'none';" +
+                    "   }" +
+                    "}"
+        });
+        // Checking H3
+        chrome.tabs.executeScript({
+            code:   "header3 = document.getElementsByTagName('h3');" +
+                    "for(var i = 0; i < header3.length; i++){" +
+                    "   lowerH3.push(header3[i].innerHTML.toLowerCase());" +
+                    "   if(lowerH3[i].indexOf('"+block[i]+"') >= 0 && header3[i].style.display != 'none'){" +
+                    "       badH3.push(header3[i]);" +
+                    "       badH3Disp.push(header3[i].style.display);" +
+                    "       header3[i].style.display = 'none';" +
                     "   }" +
                     "}"
         });
@@ -134,7 +160,7 @@ function hide(block){
             code:   "descYT = document.getElementsByTagName('yt-formatted-string');" +
                     "for(var i = 0; i < descYT.length; i++){" +
                     "   lowerYTD.push(descYT[i].innerHTML.toLowerCase());" +
-                    "   if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){" +
+                    "   if(lowerYTD[i].indexOf('"+block[i]+"') >= 0 && descYT[i].style.display != 'none'){" +
                     "       badYTD.push(descYT[i]);" +
                     "       badYTDDisp.push(descYT[i].style.display);" +
                     "       descYT[i].style.display = 'none';" + 
@@ -147,7 +173,7 @@ function hide(block){
             code:   "commentYT = document.getElementsByClassName('style-scope ytd-comment-thread-renderer');" +
                     "for(var i = 0; i < commentYT.length; i++){" +
                     "   lowerYTC.push(commentYT[i].innerHTML.toLowerCase());" +
-                    "   if(lowerYTC[i].indexOf('"+block[i]+"') >= 0){" +
+                    "   if(lowerYTC[i].indexOf('"+block[i]+"') >= 0 && commentYT[i].style.display != 'none'){" +
                     "       badYTC.push(commentYT[i]);" +
                     "       badYTCDisp.push(commentYT[i].style.display);" +
                     "       commentYT[i].style.display = 'none';" +
@@ -159,7 +185,7 @@ function hide(block){
             code:   "table = document.getElementsByTagName('td');" +
                     "for(var i = 0; i < table.length; i++){"+
                     "   lowerTable.push(table[i].innerHTML.toLowerCase());" +
-                    "   if(lowerTable[i].indexOf('"+block[i]+"') >= 0){" +
+                    "   if(lowerTable[i].indexOf('"+block[i]+"') >= 0 && table[i].style.display != 'none'){" +
                     "       badTable.push(table[i]);" +
                     "       badTableDisp.push(table[i].style.display);" +
                     "       table[i].style.display = 'none';" +
@@ -171,7 +197,7 @@ function hide(block){
             code:   "tableHead = document.getElementsByTagName('th');" +
                     "for(var i = 0; i < tableHead.length; i++){"+
                     "   lowerTableHead.push(tableHead[i].innerHTML.toLowerCase());" +
-                    "   if(lowerTableHead[i].indexOf('"+block[i]+"') >= 0){" +
+                    "   if(lowerTableHead[i].indexOf('"+block[i]+"') >= 0 && tableHead[i].style.display != 'none'){" +
                     "       badTableHead.push(tableHead[i]);" +
                     "       badTableHeadDisp.push(tableHead[i].style.display);" +
                     "       tableHead[i].style.display = 'none';"+
@@ -212,6 +238,14 @@ function show(){
     // H1
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badH1.length; j++){badH1[j].style.display = badH1Disp[j];}"
+    });
+    // H2
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badH2.length; j++){badH2[j].style.display = badH2Disp[j];}"
+    });
+    // H3
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badH3.length; j++){badH3[j].style.display = badH3Disp[j];}"
     });
     //YouTube Description
     chrome.tabs.executeScript({
