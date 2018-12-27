@@ -18,8 +18,8 @@ chrome.runtime.onInstalled.addListener(function() {
     chrome.storage.sync.set({'other2': other2});
 });
 
-chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
-    if(changeInfo.status == 'complete' && tab.active){
+chrome.webNavigation.onCompleted.addListener(function(){
+    if(true){//changeInfo.status == 'complete' && tab.active){
         chrome.storage.sync.get('activated', function(data){
             chrome.storage.sync.get('block', function(block){
                 if(data.activated){hide(block.block);}
@@ -32,7 +32,7 @@ chrome.tabs.onUpdated.addListener( function(tabId, changeInfo, tab){
 function hide(block){
     // Setting the arrays to be empty. Have to do it before the loop otherwise the arrays before the last loop will be lost because they'll be reset to empty each loop.
     chrome.tabs.executeScript({
-        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = [];"
+        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = []; lowerH1 = []; badH1 = []; badH1Disp = []; lowerYTD = []; badYTD = []; badYTDDisp = []; lowerYTC = []; badYTC = []; badYTCDisp = []; lowerTable = []; badTable = []; badTableDisp = [];"
     });
     // Looping through all words/phrases to block
     for(var i = 0; i < block.length; i++){
@@ -61,12 +61,13 @@ function hide(block){
             code: "qTweet = document.getElementsByClassName('QuoteTweet-container'); for(var i = 0; i<qTweet.length; i++){lowerQT.push(qTweet[i].innerHTML.toLowerCase()); if(lowerQT[i].indexOf('"+block[i]+"') >= 0){badQT.push(qTweet[i]); badQTDisp.push(qTweet[i].style.display); qTweet[i].style.display = 'none';}}"
         });
         // Checking H1
+        //window.alert('H1');
         chrome.tabs.executeScript({
             code: "header1 = document.getElementsByTagName('h1'); for(var i = 0; i < header1.length; i++){lowerH1.push(header1[i].innerHTML.toLowerCase()); if(lowerH1[i].indexOf('"+block[i]+"') >= 0){badH1.push(header1[i]); badH1Disp.push(header1[i].style.display); header1[i].style.display = 'none';}}"
         });
         // Youtube description
         chrome.tabs.executeScript({
-            code: "descYT = document.getElementById('description'); for(var i = 0; i < descYT.length; i++){lowerYTD.push(descYT[i].innerHTML.toLowerCase()); if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){badYTD.push(descYT[i]); badYTDDisp.push(descYT[i].style.display); descYT[i].style.display = 'none';}}"
+            code: "descYT = document.getElementByTagName('yt-formatted-string'); for(var i = 0; i < descYT.length; i++){lowerYTD.push(descYT[i].innerHTML.toLowerCase()); if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){badYTD.push(descYT[i]); badYTDDisp.push(descYT[i].style.display); descYT[i].style.display = 'none';}}"
             //lowerYTD = []; badYTD = []; badYTDDisp = [];
         });
         // YouTube comments

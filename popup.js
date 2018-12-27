@@ -31,7 +31,7 @@ activate.onclick = function(){
 function hide(block){
     // Setting the arrays to be empty. Have to do it before the loop otherwise the arrays before the last loop will be lost because they'll be reset to empty each loop.
     chrome.tabs.executeScript({
-        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = []; lowerH1 = []; badH1 = []; badH1Disp = []; lowerYTD = []; badYTD = []; badYTDDisp = []; lowerYTC = []; badYTC = []; badYTCDisp = []; lowerTable = []; badTable = []; badTableDisp = [];"
+        code: "lowerPars = []; badPars = []; badDisp = []; lowerComs = []; badComs = []; badComD = []; lowerSubComs = []; badSubComs = []; badSubComD = []; lowerDD = []; badDD = []; badDDisp = []; lowerDT = []; badDT = []; badTDisp = []; lowerQT = []; badQT = []; badQTDisp = []; lowerH1 = []; badH1 = []; badH1Disp = []; lowerYTD = []; badYTD = []; badYTDDisp = []; lowerYTC = []; badYTC = []; badYTCDisp = []; lowerTable = []; badTable = []; badTableDisp = []; lowerTableHead = []; badTableHead = []; badTableHeadDisp = [];"
     });
     // Looping through all words/phrases to block
     for(var i = 0; i < block.length; i++){
@@ -65,20 +65,27 @@ function hide(block){
         });
         // Youtube description
         chrome.tabs.executeScript({
-            code: "descYT = document.getElementById('description'); for(var i = 0; i < descYT.length; i++){lowerYTD.push(descYT[i].innerHTML.toLowerCase()); if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){badYTD.push(descYT[i]); badYTDDisp.push(descYT[i].style.display); descYT[i].style.display = 'none';}}"
+            code: "descYT = document.getElementByTagName('yt-formatted-string'); for(var i = 0; i < descYT.length; i++){lowerYTD.push(descYT[i].innerHTML.toLowerCase()); if(lowerYTD[i].indexOf('"+block[i]+"') >= 0){badYTD.push(descYT[i]); badYTDDisp.push(descYT[i].style.display); descYT[i].style.display = 'none';}}"
             //lowerYTD = []; badYTD = []; badYTDDisp = [];
         });
         // YouTube comments
         chrome.tabs.executeScript({
             code: "commentYT = document.getElementsByClassName('style-scope ytd-comment-thread-renderer'); for(var i = 0; i < commentYT.length; i++){lowerYTC.push(commentYT[i].innerHTML.toLowerCase()); if(lowerYTC[i].indexOf('"+block[i]+"') >= 0){badYTC.push(commentYT[i]); badYTCDisp.push(commentYT[i].style.display); commentYT[i].style.display = 'none';}}"
         });
-        // developer.chrome text in tables
+        // table contents
         chrome.tabs.executeScript({
             code: "table = document.getElementsByTagName('td'); for(var i = 0; i < table.length; i++){lowerTable.push(table[i].innerHTML.toLowerCase()); if(lowerTable[i].indexOf('"+block[i]+"') >= 0){badTable.push(table[i]); badTableDisp.push(table[i].style.display); table[i].style.display = 'none';}}"
+        });
+        // table heading
+        chrome.tabs.executeScript({
+            code: "tableHead = document.getElementsByTagName('th'); for(var i = 0; i < tableHead.length; i++){lowerTableHead.push(tableHead[i].innerHTML.toLowerCase()); if(lowerTableHead[i].indexOf('"+block[i]+"') >= 0){badTableHead.push(tableHead[i]); badTableHeadDisp.push(tableHead[i].style.display); tableHead[i].style.display = 'none';}}"
         });
     };
 };
 
+// This function shows hidden content. I'm thinking this isn't necessary, when the user turns off the extension they can reload the page to see it
+// Although this could be problematic for things like facebook were reloading the page changes what's on the page
+// Maybe show will be something for later versions
 function show(){
     // Paragraphs
     chrome.tabs.executeScript({
@@ -116,8 +123,12 @@ function show(){
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badYTC.length; j++){badYTC[j].style.display = badYTCDisp[j];}"
     });
-    // developer.chrome table
+    // table contents
     chrome.tabs.executeScript({
         code: "for(var j = 0; j < badTable.length; j++){badTable[j].style.display = badTableDisp[j];}"
+    });
+    // table header
+    chrome.tabs.executeScript({
+        code: "for(var j = 0; j < badTableHead.length; j++){badTableHead[j].style.display = badTableHeadDisp[j];}"
     });
 };
